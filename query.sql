@@ -78,3 +78,46 @@ CREATE TABLE Reviews (
     FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
     FOREIGN KEY (book_id) REFERENCES Books(book_id) ON DELETE CASCADE
 );
+
+
+CREATE TABLE user_activity (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    book_id INT NULL,
+    activity_type ENUM('view', 'click', 'search') NOT NULL,
+    search_query VARCHAR(255) NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (book_id) REFERENCES books(book_id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+
+CREATE TABLE book_categories (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    category_name VARCHAR(100)
+);
+
+
+ALTER TABLE books ADD COLUMN category_id INT;
+ALTER TABLE books ADD FOREIGN KEY (category_id) REFERENCES book_categories(id);
+
+
+CREATE TABLE user_preferences (
+    user_id INT PRIMARY KEY,
+    preferred_category_id INT,
+    last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (preferred_category_id) REFERENCES book_categories(id) ON DELETE SET NULL
+) ENGINE=InnoDB;
+
+
+
+
+ALTER TABLE Orders ADD COLUMN payment_status ENUM('Pending','Paid') DEFAULT 'Pending';
+
+-- Insert admin user manually (modify email/password as needed)
+INSERT INTO Users (name, email, password, role) 
+VALUES ('Admin User', 'admin@sundarswadesh.com', 'Admin@123', 'admin');
+
+-- Verify admin exists
+SELECT * FROM Users WHERE role = 'admin';

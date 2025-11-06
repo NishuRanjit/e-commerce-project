@@ -84,43 +84,225 @@ $reviews_stmt->close();
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Write a Review</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body { background-color: #f8f9fa; padding: 20px; }
-        .container { max-width: 800px; }
-        .card { border: none; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
-        .card-header { background-color: #007bff; color: white; }
-        .card-body { padding: 20px; }
-        .form-group { margin-bottom: 15px; }
-        .btn { margin-top: 10px; }
-        .review-card { margin-bottom: 15px; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
-        .review-author { font-weight: bold; color: #007bff; }
-        .review-rating { color: #ffc107; font-size: 1.1rem; }
-        .review-date { font-size: 0.9rem; color: #666; }
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 0;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            background: rgba(44, 62, 80, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-brand {
+            color: white !important;
+            font-weight: 700;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .navbar-brand i {
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .btn-back {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-back:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: transparent;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .container {
+            max-width: 900px;
+            margin-top: 40px;
+            padding-bottom: 40px;
+        }
+
+        .card {
+            border: none;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            font-size: 1.3rem;
+        }
+
+        .card-body {
+            padding: 25px;
+            background: white;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .form-control {
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .review-card {
+            margin-bottom: 20px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        .review-card:hover {
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .review-author {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        .review-rating {
+            color: #ffc107;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .review-rating i {
+            margin-right: 3px;
+        }
+
+        .review-date {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 10px;
+        }
+
+        .review-text {
+            color: #555;
+            line-height: 1.6;
+            margin: 10px 0;
+        }
+
+        .alert {
+            border-radius: 12px;
+            border: none;
+            padding: 15px 20px;
+        }
+
+        h4 {
+            color: #2c3e50;
+            font-weight: 700;
+            margin-bottom: 20px;
+            padding-left: 15px;
+            border-left: 4px solid #667eea;
+        }
     </style>
 </head>
+
 <body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container-fluid">
+            <a href="books.php" class="navbar-brand">
+                <i class="fas fa-book-open"></i>
+                Sundar Swodesh Prakasan
+            </a>
+            <a href="books.php" class="btn-back">
+                <i class="fas fa-arrow-left"></i> Back to Books
+            </a>
+        </div>
+    </nav>
+
     <div class="container">
         <!-- Display Messages -->
         <?php if (isset($_SESSION['message'])): ?>
             <div class="alert alert-<?php echo $_SESSION['message_type']; ?>">
                 <?php echo $_SESSION['message']; ?>
             </div>
-            <?php unset($_SESSION['message']); unset($_SESSION['message_type']); ?>
+            <?php unset($_SESSION['message']);
+            unset($_SESSION['message_type']); ?>
         <?php endif; ?>
 
         <!-- Book Details -->
         <div class="card mb-4">
             <div class="card-header">
-                <h4>Write a Review for: <?php echo htmlspecialchars($book['title']); ?></h4>
+                <h4 style="margin: 0; border: none; padding: 0; color: white;">
+                    <i class="fas fa-pen-fancy"></i> Write a Review for: <?php echo htmlspecialchars($book['title']); ?>
+                </h4>
             </div>
             <div class="card-body">
-                <p><strong>Author:</strong> <?php echo htmlspecialchars($book['author']); ?></p>
-                <p><strong>Description:</strong> <?php echo htmlspecialchars($book['description']); ?></p>
+                <p><strong><i class="fas fa-user"></i> Author:</strong> <?php echo htmlspecialchars($book['author']); ?></p>
+                <p><strong><i class="fas fa-align-left"></i> Description:</strong> <?php echo htmlspecialchars($book['description']); ?></p>
             </div>
         </div>
 
@@ -129,34 +311,60 @@ $reviews_stmt->close();
             <div class="card-body">
                 <form method="POST" action="">
                     <div class="form-group">
-                        <label for="rating">Rating (1-5):</label>
+                        <label for="rating" class="form-label">
+                            <i class="fas fa-star"></i> Rating (1-5):
+                        </label>
                         <input type="number" name="rating" class="form-control" min="1" max="5" required>
                     </div>
                     <div class="form-group">
-                        <label for="review_text">Review:</label>
-                        <textarea name="review_text" class="form-control" rows="5" required></textarea>
+                        <label for="review_text" class="form-label">
+                            <i class="fas fa-comment-dots"></i> Your Review:
+                        </label>
+                        <textarea name="review_text" class="form-control" rows="5" placeholder="Share your thoughts about this book..." required></textarea>
                     </div>
-                    <button type="submit" name="submit_review" class="btn btn-primary">Submit Review</button>
+                    <button type="submit" name="submit_review" class="btn btn-primary">
+                        <i class="fas fa-paper-plane"></i> Submit Review
+                    </button>
                 </form>
             </div>
         </div>
 
         <!-- Existing Reviews -->
-        <h4>Existing Reviews</h4>
+        <h4><i class="fas fa-comments"></i> Existing Reviews</h4>
         <?php if ($reviews_result->num_rows > 0): ?>
             <?php while ($review = $reviews_result->fetch_assoc()): ?>
                 <div class="review-card">
-                    <div class="review-author"><?php echo htmlspecialchars($review['name']); ?></div>
-                    <div class="review-rating">Rating: <?php echo htmlspecialchars($review['rating']); ?></div>
-                    <div class="review-text"><?php echo htmlspecialchars($review['review_text']); ?></div>
-                    <div class="review-date"><?php echo htmlspecialchars($review['review_date']); ?></div>
+                    <div class="review-author">
+                        <i class="fas fa-user-circle"></i> <?php echo htmlspecialchars($review['name']); ?>
+                    </div>
+                    <div class="review-rating">
+                        <?php
+                        $rating = intval($review['rating']);
+                        for ($i = 1; $i <= 5; $i++) {
+                            if ($i <= $rating) {
+                                echo '<i class="fas fa-star"></i>';
+                            } else {
+                                echo '<i class="far fa-star"></i>';
+                            }
+                        }
+                        echo " ({$rating}/5)";
+                        ?>
+                    </div>
+                    <div class="review-text"><?php echo nl2br(htmlspecialchars($review['review_text'])); ?></div>
+                    <div class="review-date">
+                        <i class="far fa-calendar-alt"></i> <?php echo date('M d, Y', strtotime($review['review_date'])); ?>
+                    </div>
                 </div>
             <?php endwhile; ?>
         <?php else: ?>
-            <p>No reviews yet. Be the first to write one!</p>
+            <p style="text-align: center; color: #999; padding: 40px 0;">
+                <i class="fas fa-inbox" style="font-size: 3rem; display: block; margin-bottom: 15px;"></i>
+                No reviews yet. Be the first to write one!
+            </p>
         <?php endif; ?>
     </div>
 </body>
+
 </html>
 
 <?php
