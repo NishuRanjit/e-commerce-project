@@ -1,7 +1,7 @@
 <?php
 session_start();
 require 'vendor/autoload.php';
-require 'config.php';
+require 'config.php'; // this now provides $stripe_keys array
 
 // Prevent browser from caching old POST data
 header("Cache-Control: no-cache, no-store, must-revalidate");
@@ -39,7 +39,8 @@ if (!isset($_GET['session_id'])) {
         die("Your cart is empty. Please add items before proceeding.");
     }
 
-    \Stripe\Stripe::setApiKey(STRIPE_SECRET_KEY);
+    // Use secret key from $stripe_keys array
+    \Stripe\Stripe::setApiKey($stripe_keys['secret']);
     $base_url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]";
 
     try {
@@ -205,7 +206,9 @@ $total_price = $_GET['amount'];
     </footer>
 
     <script>
-        const stripe = Stripe("<?php echo STRIPE_PUBLISHABLE_KEY; ?>");
+        // Use the publishable key from $stripe_keys array
+        const stripe = Stripe("<?php echo $stripe_keys['publishable']; ?>");
+
         document.getElementById("checkout-button").addEventListener("click", () => {
             stripe.redirectToCheckout({
                 sessionId: "<?php echo htmlspecialchars($session_id); ?>"
