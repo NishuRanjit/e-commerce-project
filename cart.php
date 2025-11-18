@@ -83,7 +83,7 @@ $total = 0;
 
 <head>
     <meta charset="UTF-8">
-    <title>🛍️ Your Shopping Cart | Sundar Swadesh</title>
+    <title>Your Shopping Cart | Sundar Swadesh</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
@@ -206,11 +206,11 @@ $total = 0;
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container d-flex justify-content-between align-items-center">
-            <a class="navbar-brand" href="books.php"> Sundar Swadesh</a>
+            <a class="navbar-brand" href="books.php">Sundar Swadesh</a>
             <div class="d-flex align-items-center">
-                <a href="orders.php" class="nav-link"><i class="fas fa-box"></i> Order History</a>
-                <a href="books.php" class="nav-link"><i class="fas fa-book"></i> Books</a>
-                <a href="logout.php" class="btn btn-outline-light"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                <a href="orders.php" class="nav-link">Order History</a>
+                <a href="books.php" class="nav-link">Books</a>
+                <a href="logout.php" class="btn btn-outline-light">Logout</a>
             </div>
         </div>
     </nav>
@@ -218,7 +218,7 @@ $total = 0;
     <!-- Main Cart Section -->
     <div class="container">
         <div class="card">
-            <h2>Your Shopping Cart 🛒</h2>
+            <h2>Your Shopping Cart</h2>
 
             <!-- Add Book -->
             <form method="POST" class="mb-4">
@@ -236,7 +236,7 @@ $total = 0;
                         </select>
                     </div>
                     <div class="col-md-4 d-grid">
-                        <button type="submit" name="add_to_cart" class="btn btn-primary"><i class="fas fa-cart-plus"></i> Add to Cart</button>
+                        <button type="submit" name="add_to_cart" class="btn btn-primary">Add to Cart</button>
                     </div>
                 </div>
             </form>
@@ -260,10 +260,10 @@ $total = 0;
                                     $total += $row['total_price']; ?>
                                     <tr>
                                         <td><?= htmlspecialchars($row['title']); ?></td>
-                                        <td>$<?= number_format($row['price'], 2); ?></td>
+                                        <td>$ <?= number_format($row['price'], 2); ?></td>
                                         <td><input type="number" name="quantity[<?= $row['cart_id']; ?>]" value="<?= $row['quantity']; ?>" min="1" class="form-control text-center"></td>
-                                        <td>$<?= number_format($row['total_price'], 2); ?></td>
-                                        <td><a href="cart.php?remove_id=<?= $row['cart_id']; ?>" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Remove</a></td>
+                                        <td>$ <?= number_format($row['total_price'], 2); ?></td>
+                                        <td><a href="cart.php?remove_id=<?= $row['cart_id']; ?>" class="btn btn-danger btn-sm">Remove</a></td>
                                     </tr>
                                 <?php endwhile; ?>
                             </tbody>
@@ -271,10 +271,10 @@ $total = 0;
                     </div>
 
                     <div class="d-flex justify-content-between align-items-center mt-4 flex-wrap">
-                        <h5 class="fw-bold mb-3 mb-md-0">Total Price: $<?= number_format($total, 2); ?></h5>
+                        <h5 class="fw-bold mb-3 mb-md-0">Total Price: $ <?= number_format($total, 2); ?></h5>
                         <div>
-                            <button type="submit" name="update_cart" class="btn btn-primary me-2"><i class="fas fa-sync-alt"></i> Update Cart</button>
-                            <a href="order_items.php" class="btn btn-finalize"><i class="fas fa-credit-card"></i> Check Order</a>
+                            <button type="submit" name="update_cart" class="btn btn-primary me-2">Update Cart</button>
+                            <a href="order_items.php" class="btn btn-finalize">Check Order</a>
                         </div>
                     </div>
                 </form>

@@ -92,23 +92,13 @@ CREATE TABLE user_activity (
 ) ENGINE=InnoDB;
 
 
-CREATE TABLE book_categories (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    category_name VARCHAR(100)
-);
 
 
-ALTER TABLE books ADD COLUMN category_id INT;
-ALTER TABLE books ADD FOREIGN KEY (category_id) REFERENCES book_categories(id);
 
 
-CREATE TABLE user_preferences (
-    user_id INT PRIMARY KEY,
-    preferred_category_id INT,
-    last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
-    FOREIGN KEY (preferred_category_id) REFERENCES book_categories(id) ON DELETE SET NULL
-) ENGINE=InnoDB;
+
+
+
 
 
 

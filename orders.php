@@ -167,7 +167,7 @@ $draft_stmt->close();
     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg shadow-sm">
         <div class="container">
-            <a class="navbar-brand" href="books.php">📚 Sundar Swadesh</a>
+            <a class="navbar-brand" href="books.php">Sundar Swadesh</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -182,17 +182,17 @@ $draft_stmt->close();
     </nav>
 
     <div class="container">
-        <h2>Your Orders 🧾</h2>
+        <h2>Your Orders</h2>
 
         <!-- DRAFT / UNPAID ORDERS -->
-        <h4 class="section-title">📝 Draft Orders (Pending Payment)</h4>
+        <h4 class="section-title">Draft Orders (Pending Payment)</h4>
         <?php if ($draft_orders->num_rows > 0): ?>
             <?php while ($order = $draft_orders->fetch_assoc()): ?>
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <div>
                             <h5 class="mb-0">Order ID: <?php echo htmlspecialchars($order['order_id']); ?></h5>
-                            <small class="order-date">📅 <?php echo htmlspecialchars($order['order_date']); ?></small>
+                            <small class="order-date"><?php echo htmlspecialchars($order['order_date']); ?></small>
                         </div>
                         <span class="order-status text-warning">
                             <?php echo ucfirst(htmlspecialchars($order['payment_status'] ?? 'Pending')); ?>
@@ -244,14 +244,14 @@ $draft_stmt->close();
 
 
         <!-- COMPLETED / PAID ORDERS -->
-        <h4 class="section-title mt-5">✅ Completed Orders (Paid)</h4>
+        <h4 class="section-title mt-5">Completed Orders (Paid)</h4>
         <?php if ($completed_orders->num_rows > 0): ?>
             <?php while ($order = $completed_orders->fetch_assoc()): ?>
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <div>
                             <h5 class="mb-0">Order ID: <?php echo htmlspecialchars($order['order_id']); ?></h5>
-                            <small class="order-date">📅 <?php echo htmlspecialchars($order['order_date']); ?></small>
+                            <small class="order-date"><?php echo htmlspecialchars($order['order_date']); ?></small>
                         </div>
                         <span class="order-status text-success">
                             <?php echo ucfirst(htmlspecialchars($order['payment_status'])); ?>

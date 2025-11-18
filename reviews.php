@@ -90,7 +90,6 @@ $reviews_stmt->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Write a Review</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body {
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
@@ -118,13 +117,6 @@ $reviews_stmt->close();
             align-items: center;
             gap: 10px;
             text-decoration: none;
-        }
-
-        .navbar-brand i {
-            font-size: 1.8rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
 
         .btn-back {
@@ -237,10 +229,6 @@ $reviews_stmt->close();
             margin-bottom: 10px;
         }
 
-        .review-rating i {
-            margin-right: 3px;
-        }
-
         .review-date {
             font-size: 0.9rem;
             color: #666;
@@ -266,6 +254,21 @@ $reviews_stmt->close();
             padding-left: 15px;
             border-left: 4px solid #667eea;
         }
+
+        .star {
+            color: #ffc107;
+        }
+
+        .star-empty {
+            color: #ddd;
+        }
+
+        .no-reviews {
+            text-align: center;
+            color: #999;
+            padding: 40px 0;
+            font-size: 1.1rem;
+        }
     </style>
 </head>
 
@@ -274,11 +277,10 @@ $reviews_stmt->close();
     <nav class="navbar">
         <div class="container-fluid">
             <a href="books.php" class="navbar-brand">
-                <i class="fas fa-book-open"></i>
                 Sundar Swodesh Prakasan
             </a>
             <a href="books.php" class="btn-back">
-                <i class="fas fa-arrow-left"></i> Back to Books
+                ← Back to Books
             </a>
         </div>
     </nav>
@@ -297,12 +299,12 @@ $reviews_stmt->close();
         <div class="card mb-4">
             <div class="card-header">
                 <h4 style="margin: 0; border: none; padding: 0; color: white;">
-                    <i class="fas fa-pen-fancy"></i> Write a Review for: <?php echo htmlspecialchars($book['title']); ?>
+                    Write a Review for: <?php echo htmlspecialchars($book['title']); ?>
                 </h4>
             </div>
             <div class="card-body">
-                <p><strong><i class="fas fa-user"></i> Author:</strong> <?php echo htmlspecialchars($book['author']); ?></p>
-                <p><strong><i class="fas fa-align-left"></i> Description:</strong> <?php echo htmlspecialchars($book['description']); ?></p>
+                <p><strong>Author:</strong> <?php echo htmlspecialchars($book['author']); ?></p>
+                <p><strong>Description:</strong> <?php echo htmlspecialchars($book['description']); ?></p>
             </div>
         </div>
 
@@ -312,39 +314,39 @@ $reviews_stmt->close();
                 <form method="POST" action="">
                     <div class="form-group">
                         <label for="rating" class="form-label">
-                            <i class="fas fa-star"></i> Rating (1-5):
+                            Rating (1-5):
                         </label>
                         <input type="number" name="rating" class="form-control" min="1" max="5" required>
                     </div>
                     <div class="form-group">
                         <label for="review_text" class="form-label">
-                            <i class="fas fa-comment-dots"></i> Your Review:
+                            Your Review:
                         </label>
                         <textarea name="review_text" class="form-control" rows="5" placeholder="Share your thoughts about this book..." required></textarea>
                     </div>
                     <button type="submit" name="submit_review" class="btn btn-primary">
-                        <i class="fas fa-paper-plane"></i> Submit Review
+                        Submit Review
                     </button>
                 </form>
             </div>
         </div>
 
         <!-- Existing Reviews -->
-        <h4><i class="fas fa-comments"></i> Existing Reviews</h4>
+        <h4>Existing Reviews</h4>
         <?php if ($reviews_result->num_rows > 0): ?>
             <?php while ($review = $reviews_result->fetch_assoc()): ?>
                 <div class="review-card">
                     <div class="review-author">
-                        <i class="fas fa-user-circle"></i> <?php echo htmlspecialchars($review['name']); ?>
+                        <?php echo htmlspecialchars($review['name']); ?>
                     </div>
                     <div class="review-rating">
                         <?php
                         $rating = intval($review['rating']);
                         for ($i = 1; $i <= 5; $i++) {
                             if ($i <= $rating) {
-                                echo '<i class="fas fa-star"></i>';
+                                echo '<span class="star">★</span>';
                             } else {
-                                echo '<i class="far fa-star"></i>';
+                                echo '<span class="star-empty">★</span>';
                             }
                         }
                         echo " ({$rating}/5)";
@@ -352,13 +354,12 @@ $reviews_stmt->close();
                     </div>
                     <div class="review-text"><?php echo nl2br(htmlspecialchars($review['review_text'])); ?></div>
                     <div class="review-date">
-                        <i class="far fa-calendar-alt"></i> <?php echo date('M d, Y', strtotime($review['review_date'])); ?>
+                        <?php echo date('M d, Y', strtotime($review['review_date'])); ?>
                     </div>
                 </div>
             <?php endwhile; ?>
         <?php else: ?>
-            <p style="text-align: center; color: #999; padding: 40px 0;">
-                <i class="fas fa-inbox" style="font-size: 3rem; display: block; margin-bottom: 15px;"></i>
+            <p class="no-reviews">
                 No reviews yet. Be the first to write one!
             </p>
         <?php endif; ?>

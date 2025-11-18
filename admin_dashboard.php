@@ -43,7 +43,6 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard | Sundar Swadesh</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body {
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
@@ -124,14 +123,6 @@ $conn->close();
             background: linear-gradient(135deg, #667eea, #764ba2);
         }
 
-        .stat-icon {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
         .stat-value {
             font-size: 2rem;
             font-weight: 700;
@@ -169,15 +160,6 @@ $conn->close();
             transform: translateY(-5px);
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
             color: #667eea;
-        }
-
-        .action-btn i {
-            display: block;
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
 
         .recent-orders {
@@ -231,13 +213,13 @@ $conn->close();
     <!-- Admin Navbar -->
     <div class="admin-navbar">
         <div class="container">
-            <h2><i class="fas fa-shield-alt"></i> Admin Dashboard</h2>
+            <h2>Admin Dashboard</h2>
             <div class="nav-links">
                 <span style="color: white; margin-right: 15px;">
-                    <i class="fas fa-user"></i> <?php echo htmlspecialchars($_SESSION['user_name']); ?>
+                    <?php echo htmlspecialchars($_SESSION['user_name']); ?>
                 </span>
-                <a href="books.php"><i class="fas fa-home"></i> View Site</a>
-                <a href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                <a href="books.php">View Site</a>
+                <a href="logout.php">Logout</a>
             </div>
         </div>
     </div>
@@ -246,25 +228,21 @@ $conn->close();
         <!-- Statistics Cards -->
         <div class="stats-grid">
             <div class="stat-card">
-                <div class="stat-icon"><i class="fas fa-book"></i></div>
                 <div class="stat-value"><?php echo $total_books; ?></div>
                 <div class="stat-label">Total Books</div>
             </div>
 
             <div class="stat-card">
-                <div class="stat-icon"><i class="fas fa-users"></i></div>
                 <div class="stat-value"><?php echo $total_users; ?></div>
                 <div class="stat-label">Total Customers</div>
             </div>
 
             <div class="stat-card">
-                <div class="stat-icon"><i class="fas fa-shopping-cart"></i></div>
                 <div class="stat-value"><?php echo $total_orders; ?></div>
                 <div class="stat-label">Total Orders</div>
             </div>
 
             <div class="stat-card">
-                <div class="stat-icon"><i class="fas fa-dollar-sign"></i></div>
                 <div class="stat-value">$<?php echo number_format($total_revenue, 2); ?></div>
                 <div class="stat-label">Total Revenue</div>
             </div>
@@ -273,29 +251,25 @@ $conn->close();
         <!-- Action Buttons -->
         <div class="action-buttons">
             <a href="bookadd.php" class="action-btn">
-                <i class="fas fa-plus-circle"></i>
                 Add New Book
             </a>
 
             <a href="manage_books.php" class="action-btn">
-                <i class="fas fa-edit"></i>
                 Manage Books
             </a>
 
             <a href="manage_users.php" class="action-btn">
-                <i class="fas fa-users-cog"></i>
                 Manage Users
             </a>
 
             <a href="manage_orders.php" class="action-btn">
-                <i class="fas fa-box-open"></i>
                 View All Orders
             </a>
         </div>
 
         <!-- Recent Orders -->
         <div class="recent-orders">
-            <h3><i class="fas fa-clock"></i> Recent Orders</h3>
+            <h3>Recent Orders</h3>
             <div class="table-responsive">
                 <table class="table table-hover">
                     <thead>

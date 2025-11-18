@@ -84,7 +84,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <title>Add Book - Admin Panel</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body {
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
@@ -133,10 +132,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             margin-bottom: 30px;
             color: #2c3e50;
             font-weight: 700;
-        }
-
-        .form-container h2 i {
-            color: #667eea;
         }
 
         .form-label {
@@ -212,12 +207,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             background: #e9ecef;
             border-color: #667eea;
         }
-
-        .file-input-label i {
-            color: #667eea;
-            font-size: 1.5rem;
-            margin-bottom: 8px;
-        }
     </style>
 </head>
 
@@ -225,27 +214,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Admin Navigation -->
     <div class="admin-navbar">
         <div class="container">
-            <a href="admin_dashboard.php"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+            <a href="admin_dashboard.php">← Back to Dashboard</a>
             <span style="color: white; font-weight: 600;">
-                <i class="fas fa-user-shield"></i> Admin: <?php echo htmlspecialchars($_SESSION['user_name']); ?>
+                Admin: <?php echo htmlspecialchars($_SESSION['user_name']); ?>
             </span>
-            <a href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            <a href="logout.php">Logout</a>
         </div>
     </div>
 
     <div class="form-container">
-        <h2><i class="fas fa-book-medical"></i> Add a New Book</h2>
+        <h2>Add a New Book</h2>
 
         <?php if (!empty($success_message)): ?>
             <div class="alert alert-success alert-dismissible fade show">
-                <i class="fas fa-check-circle"></i> <?php echo $success_message; ?>
+                ✓ <?php echo $success_message; ?>
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         <?php endif; ?>
 
         <?php if (!empty($error_message)): ?>
             <div class="alert alert-danger alert-dismissible fade show">
-                <i class="fas fa-exclamation-circle"></i> <?php echo $error_message; ?>
+                ✗ <?php echo $error_message; ?>
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         <?php endif; ?>
@@ -253,41 +242,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <form action="" method="POST" enctype="multipart/form-data">
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <label for="title" class="form-label"><i class="fas fa-heading"></i> Book Title *</label>
+                    <label for="title" class="form-label">Book Title *</label>
                     <input type="text" id="title" name="title" class="form-control" placeholder="Enter book title" required>
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label for="author" class="form-label"><i class="fas fa-user-edit"></i> Author *</label>
+                    <label for="author" class="form-label">Author *</label>
                     <input type="text" id="author" name="author" class="form-control" placeholder="Enter author name" required>
                 </div>
             </div>
 
             <div class="mb-3">
-                <label for="description" class="form-label"><i class="fas fa-align-left"></i> Description</label>
+                <label for="description" class="form-label">Description</label>
                 <textarea id="description" name="description" class="form-control" rows="4" placeholder="Enter book description"></textarea>
             </div>
 
             <div class="row">
                 <div class="col-md-4 mb-3">
-                    <label for="price" class="form-label"><i class="fas fa-dollar-sign"></i> Price *</label>
+                    <label for="price" class="form-label">Price *</label>
                     <input type="number" id="price" name="price" step="0.01" class="form-control" placeholder="0.00" required>
                 </div>
                 <div class="col-md-4 mb-3">
-                    <label for="genre" class="form-label"><i class="fas fa-tag"></i> Genre</label>
+                    <label for="genre" class="form-label">Genre</label>
                     <input type="text" id="genre" name="genre" class="form-control" placeholder="e.g., Fiction, Science">
                 </div>
                 <div class="col-md-4 mb-3">
-                    <label for="stock" class="form-label"><i class="fas fa-boxes"></i> Stock *</label>
+                    <label for="stock" class="form-label">Stock *</label>
                     <input type="number" id="stock" name="stock" class="form-control" placeholder="0" required>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <label class="form-label"><i class="fas fa-image"></i> Cover Image *</label>
+                    <label class="form-label">Cover Image *</label>
                     <div class="file-input-wrapper">
                         <label class="file-input-label">
-                            <i class="fas fa-cloud-upload-alt"></i>
                             <div>Click to upload cover image</div>
                             <small class="text-muted">JPG, PNG (Max 5MB)</small>
                         </label>
@@ -295,10 +283,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label class="form-label"><i class="fas fa-file-pdf"></i> Book File *</label>
+                    <label class="form-label">Book File *</label>
                     <div class="file-input-wrapper">
                         <label class="file-input-label">
-                            <i class="fas fa-cloud-upload-alt"></i>
                             <div>Click to upload book file</div>
                             <small class="text-muted">PDF, EPUB (Max 50MB)</small>
                         </label>
@@ -309,7 +296,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <div class="mb-3">
                 <button type="submit" class="btn btn-submit">
-                    <i class="fas fa-plus-circle"></i> Add Book to Store
+                    Add Book to Store
                 </button>
             </div>
         </form>

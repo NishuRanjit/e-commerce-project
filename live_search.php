@@ -288,6 +288,7 @@ $conn->close();
         }
 
         function displayResults(results, query) {
+
             if (results.length === 0) {
                 searchResults.html('<div class="no-results">No books found</div>').addClass('show');
                 return;

@@ -41,7 +41,12 @@ if (!isset($_GET['session_id'])) {
 
     // Use secret key from $stripe_keys array
     \Stripe\Stripe::setApiKey($stripe_keys['secret']);
-    $base_url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]";
+
+    // Get the base URL and construct proper success URL
+    $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? "https" : "http";
+    $host = $_SERVER['HTTP_HOST'];
+    $script_dir = dirname($_SERVER['SCRIPT_NAME']);
+    $base_url = $protocol . "://" . $host . $script_dir;
 
     try {
         $checkout_session = \Stripe\Checkout\Session::create([
@@ -187,16 +192,16 @@ $total_price = $_GET['amount'];
 <body>
 
     <div class="navbar">
-        <a href="books.php">📚 Books</a>
-        <a href="cart.php">🛒 Cart</a>
-        <a href="order_items.php">📦 Orders</a>
-        <a href="orders.php">📖 History</a>
+        <a href="books.php">Books</a>
+        <a href="cart.php"> Cart</a>
+        <a href="order_items.php"> Orders</a>
+        <a href="orders.php"> History</a>
     </div>
 
     <div class="container">
         <h2>Secure Checkout</h2>
         <p>Total Amount</p>
-        <div class="amount">$<?php echo number_format($total_price, 2); ?></div>
+        <div class="amount">$ <?php echo number_format($total_price, 2); ?></div>
         <br>
         <button id="checkout-button">Pay Now</button>
     </div>

@@ -74,7 +74,6 @@ if (!empty($search_query)) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Results | Sundar Swadesh</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body {
             background: linear-gradient(135deg, #f4f9ff, #eefaf1);
@@ -260,15 +259,10 @@ if (!empty($search_query)) {
             padding: 60px 20px;
         }
 
-        .no-results i {
-            font-size: 80px;
-            color: #ccc;
-            margin-bottom: 20px;
-        }
-
         .no-results h3 {
             color: #666;
             margin-bottom: 15px;
+            font-size: 2rem;
         }
 
         .no-results p {
@@ -301,7 +295,7 @@ if (!empty($search_query)) {
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="books.php">
-                <i class="fas fa-book-open"></i> Sundar Swadesh
+                Sundar Swadesh
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -309,16 +303,16 @@ if (!empty($search_query)) {
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="books.php"><i class="fas fa-book"></i> Books</a>
+                        <a class="nav-link" href="books.php">Books</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="cart.php"><i class="fas fa-shopping-cart"></i> Cart</a>
+                        <a class="nav-link" href="cart.php">Cart</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="orders.php"><i class="fas fa-box"></i> Orders</a>
+                        <a class="nav-link" href="orders.php">Orders</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                        <a class="nav-link" href="logout.php">Logout</a>
                     </li>
                 </ul>
             </div>
@@ -329,7 +323,7 @@ if (!empty($search_query)) {
     <div class="container">
         <!-- Search Header -->
         <div class="search-header">
-            <h2 class="text-center mb-4"><i class="fas fa-search"></i> Search Books</h2>
+            <h2 class="text-center mb-4">Search Books</h2>
 
             <div class="search-container">
                 <form method="GET" action="search.php">
@@ -342,7 +336,7 @@ if (!empty($search_query)) {
                             autofocus
                             required>
                         <button type="submit">
-                            <i class="fas fa-search"></i> Search
+                            Search
                         </button>
                     </div>
                 </form>
@@ -350,7 +344,7 @@ if (!empty($search_query)) {
 
             <?php if (!empty($message)): ?>
                 <p class="search-message text-center">
-                    <i class="fas fa-info-circle"></i> <?php echo $message; ?>
+                    <?php echo $message; ?>
                 </p>
             <?php endif; ?>
         </div>
@@ -368,18 +362,18 @@ if (!empty($search_query)) {
                         <div class="book-body">
                             <h5 class="book-title"><?php echo htmlspecialchars($book['title']); ?></h5>
                             <p class="book-author">
-                                <i class="fas fa-user"></i> <?php echo htmlspecialchars($book['author']); ?>
+                                by <?php echo htmlspecialchars($book['author']); ?>
                             </p>
                             <?php if (!empty($book['genre'])): ?>
                                 <span class="book-genre">
-                                    <i class="fas fa-tag"></i> <?php echo htmlspecialchars($book['genre']); ?>
+                                    <?php echo htmlspecialchars($book['genre']); ?>
                                 </span>
                             <?php endif; ?>
                             <div class="book-price">
                                 $<?php echo number_format($book['price'], 2); ?>
                             </div>
                             <a href="cart.php?book_id=<?php echo $book['book_id']; ?>" class="btn-cart">
-                                <i class="fas fa-cart-plus"></i> Add to Cart
+                                Add to Cart
                             </a>
                         </div>
                     </div>
@@ -387,11 +381,10 @@ if (!empty($search_query)) {
             </div>
         <?php elseif (!empty($search_query)): ?>
             <div class="no-results">
-                <i class="fas fa-search"></i>
                 <h3>No Books Found</h3>
                 <p>Try searching with different keywords</p>
                 <a href="books.php" class="btn btn-primary mt-3">
-                    <i class="fas fa-arrow-left"></i> Browse All Books
+                    ← Browse All Books
                 </a>
             </div>
         <?php endif; ?>

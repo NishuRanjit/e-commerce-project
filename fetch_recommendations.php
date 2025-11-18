@@ -201,11 +201,11 @@ if (count($recommendations) > 0) {
                             <a href="reviews.php?book_id=' . $book['book_id'] . '" 
                                class="btn-review" 
                                title="Write a Review">
-                                <i class="fas fa-star"></i>
+                                Review
                             </a>
                             <a href="cart.php?book_id=' . $book['book_id'] . '" 
                                class="btn-cart">
-                                <i class="fas fa-cart-plus"></i> <span>Add</span>
+                                Add to Cart
                             </a>
                         </div>
                     </div>

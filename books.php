@@ -22,6 +22,45 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
+// Handle Add to Cart from URL (when clicking Add button)
+if (isset($_GET['add_to_cart'])) {
+    $book_id = $_GET['add_to_cart'];
+
+    // Check if book already in cart
+    $check_sql = "SELECT cart_id, quantity FROM Cart WHERE user_id = ? AND book_id = ?";
+    $check_stmt = $conn->prepare($check_sql);
+    $check_stmt->bind_param("ii", $user_id, $book_id);
+    $check_stmt->execute();
+    $check_result = $check_stmt->get_result();
+
+    if ($check_result->num_rows > 0) {
+        // Update quantity
+        $update_sql = "UPDATE Cart SET quantity = quantity + 1 WHERE user_id = ? AND book_id = ?";
+        $update_stmt = $conn->prepare($update_sql);
+        $update_stmt->bind_param("ii", $user_id, $book_id);
+        $update_stmt->execute();
+        $_SESSION['cart_message'] = "Book quantity updated in cart!";
+    } else {
+        // Insert new item
+        $insert_sql = "INSERT INTO Cart (user_id, book_id, quantity) VALUES (?, ?, 1)";
+        $insert_stmt = $conn->prepare($insert_sql);
+        $insert_stmt->bind_param("ii", $user_id, $book_id);
+        $insert_stmt->execute();
+        $_SESSION['cart_message'] = "Book added to cart successfully!";
+    }
+
+    header("Location: books.php?added=1");
+    exit();
+}
+
+// Get cart count for badge
+$cart_count_sql = "SELECT SUM(quantity) as total FROM Cart WHERE user_id = ?";
+$cart_stmt = $conn->prepare($cart_count_sql);
+$cart_stmt->bind_param("i", $user_id);
+$cart_stmt->execute();
+$cart_count_result = $cart_stmt->get_result();
+$cart_count = $cart_count_result->fetch_assoc()['total'] ?? 0;
+
 // Fetch all books
 $books = [];
 $sql = "SELECT * FROM books ORDER BY book_id DESC";
@@ -139,12 +178,64 @@ if ($result && $result->num_rows > 0) {
             font-weight: 500;
             transition: all 0.2s ease;
             text-decoration: none;
+            position: relative;
         }
 
         .btn-nav:hover {
             background: rgba(255, 255, 255, 0.2);
             color: white;
             transform: translateY(-1px);
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--gradient-2);
+            color: white;
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Success Message */
+        .success-message {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background: white;
+            padding: 15px 25px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            border-left: 4px solid var(--success);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 9999;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .success-message i {
+            color: var(--success);
+            font-size: 1.5rem;
         }
 
         /* Search Section */
@@ -234,7 +325,12 @@ if ($result && $result->num_rows > 0) {
             font-size: 0.95rem;
         }
 
-        /* Book Cards - MEDIUM SIZE */
+        /* Row spacing */
+        .row {
+            row-gap: 10px;
+        }
+
+        /* Book Cards */
         .book-card {
             background: white;
             border: none;
@@ -245,7 +341,7 @@ if ($result && $result->num_rows > 0) {
             cursor: pointer;
             position: relative;
             height: 100%;
-            margin-bottom: 25px;
+            margin-bottom: 35px;
         }
 
         .book-card:hover {
@@ -348,7 +444,6 @@ if ($result && $result->num_rows > 0) {
             align-items: center;
         }
 
-        /* Simple buttons - no color change animation */
         .btn-cart,
         .btn-review {
             background: var(--gradient-1);
@@ -375,7 +470,7 @@ if ($result && $result->num_rows > 0) {
 
         .btn-review {
             background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
-            padding: 8px 12px;
+            padding: 8px 14px;
         }
 
         .btn-review:hover {
@@ -435,7 +530,7 @@ if ($result && $result->num_rows > 0) {
             }
 
             .book-card {
-                margin-bottom: 20px;
+                margin-bottom: 25px;
             }
 
             .btn-cart,
@@ -443,11 +538,24 @@ if ($result && $result->num_rows > 0) {
                 padding: 7px 12px;
                 font-size: 0.75rem;
             }
+
+            .success-message {
+                right: 10px;
+                left: 10px;
+            }
         }
     </style>
 </head>
 
 <body>
+
+    <?php if (isset($_GET['added']) && isset($_SESSION['cart_message'])): ?>
+        <div class="success-message" id="successMessage">
+            <i class="fas fa-check-circle"></i>
+            <div><?= $_SESSION['cart_message'] ?></div>
+        </div>
+        <?php unset($_SESSION['cart_message']); ?>
+    <?php endif; ?>
 
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
@@ -457,13 +565,16 @@ if ($result && $result->num_rows > 0) {
             </a>
             <div class="nav-buttons">
                 <a href="cart.php" class="btn-nav">
-                    <i class="fas fa-shopping-cart"></i> Cart
+                    Cart
+                    <?php if ($cart_count > 0): ?>
+                        <span class="cart-badge"><?= $cart_count ?></span>
+                    <?php endif; ?>
                 </a>
                 <a href="orders.php" class="btn-nav">
-                    <i class="fas fa-box"></i> Orders
+                    Orders
                 </a>
                 <a href="logout.php" class="btn-nav">
-                    <i class="fas fa-sign-out-alt"></i> Logout
+                    Logout
                 </a>
             </div>
         </div>
@@ -471,18 +582,18 @@ if ($result && $result->num_rows > 0) {
 
     <!-- Search Section -->
     <div class="search-section">
-        <h2 class="search-title">🔍 Find Your Next Great Read</h2>
+        <h2 class="search-title">Find Your Next Great Read</h2>
         <div class="search-box-main">
             <form method="GET" action="search.php">
                 <input type="text" name="q" placeholder="Search by title, author, or genre..." required>
-                <button type="submit"><i class="fas fa-search"></i> Search</button>
+                <button type="submit">Search</button>
             </form>
         </div>
     </div>
 
     <div class="book-container">
         <div class="section-header">
-            <h2>✨ Explore Our Collection</h2>
+            <h2>Explore Our Collection</h2>
             <p>Discover amazing books curated just for you</p>
         </div>
 
@@ -498,8 +609,7 @@ if ($result && $result->num_rows > 0) {
                             <div class="book-cover-wrapper">
                                 <img src="<?= htmlspecialchars($book['cover_image'] ?? 'uploads/placeholder.jpg') ?>"
                                     class="book-cover"
-                                    alt="<?= htmlspecialchars($book['title']) ?>"
-                                    onerror="this.src='uploads/placeholder.jpg'">
+                                    alt="<?= htmlspecialchars($book['title']) ?>">
                                 <span class="book-badge">NEW</span>
                             </div>
                             <div class="card-body">
@@ -516,12 +626,12 @@ if ($result && $result->num_rows > 0) {
                                             class="btn-review"
                                             onclick="event.stopPropagation()"
                                             title="Write a Review">
-                                            <i class="fas fa-star"></i>
+                                            Review
                                         </a>
-                                        <a href="cart.php?book_id=<?= $book['book_id'] ?>"
+                                        <a href="books.php?add_to_cart=<?= $book['book_id'] ?>"
                                             class="btn-cart"
                                             onclick="event.stopPropagation()">
-                                            <i class="fas fa-cart-plus"></i> <span>Add</span>
+                                            Add to Cart
                                         </a>
                                     </div>
                                 </div>
@@ -533,13 +643,20 @@ if ($result && $result->num_rows > 0) {
         </div>
 
         <div id="recommendationArea" class="recommend-section">
-            <h3>📚 Recommended For You</h3>
+            <h3>Recommended For You</h3>
             <div id="recommendationContent" class="row"></div>
         </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+        // Auto-hide success message
+        <?php if (isset($_GET['added'])): ?>
+            setTimeout(function() {
+                $('#successMessage').fadeOut(300);
+            }, 3000);
+        <?php endif; ?>
+
         function loadRecommendations(bookId) {
             const content = $('#recommendationContent');
             content.html('<div class="text-center"><p>Loading recommendations...</p></div>');

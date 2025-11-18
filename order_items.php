@@ -176,20 +176,20 @@ while ($item = $cart_result->fetch_assoc()) {
         <div class="container d-flex justify-content-between align-items-center">
             <a class="navbar-brand" href="books.php"> Sundar Swadesh</a>
             <div class="d-flex align-items-center">
-                <a href="books.php" class="nav-link me-3"><i class="fas fa-book"></i> Books</a>
-                <a href="cart.php" class="nav-link me-3"><i class="fas fa-shopping-cart"></i> Cart</a>
-                <a href="logout.php" class="btn btn-outline-light"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                <a href="books.php" class="nav-link me-3"><i class=""></i> Books</a>
+                <a href="cart.php" class="nav-link me-3"><i class=""></i> Cart</a>
+                <a href="logout.php" class="btn btn-outline-light"><i class=""></i> Logout</a>
             </div>
         </div>
     </nav>
 
     <!-- Main Content -->
     <div class="container">
-        <h2>🧾 Review & Confirm Your Order</h2>
+        <h2> Review & Confirm Your Order</h2>
 
         <div class="card mb-4">
             <div class="card-header">
-                <i class="fas fa-receipt"></i> Order Summary
+                <i class=""></i> Order Summary
             </div>
             <div class="card-body">
                 <?php if (!empty($cart_items)): ?>
@@ -213,8 +213,8 @@ while ($item = $cart_result->fetch_assoc()) {
                     </div>
 
                     <form method="POST" action="payment.php" class="text-center mt-4">
-                        <button type="submit" name="place_order" class="btn btn-primary">
-                            ✅ Proceed to Secure Payment
+                        <button type="submit" name="place_order" class="">
+                            Proceed to Secure Payment
                         </button>
                     </form>
                 <?php else: ?>
